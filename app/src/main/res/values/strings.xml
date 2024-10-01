@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wishlist</string>
+    <string name="item_name_hint">Item Name</string>
+    <string name="item_price_hint">Ex: $20.00</string>
+    <string name="item_url_hint">Ex: https://store.com/item-url</string>
+    <string name="submit_button">Submit</string>
+    <string name="your_wishlist_is_empty">Wishlist is empty</string>
+</resources>
