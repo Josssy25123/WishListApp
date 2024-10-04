@@ -11,17 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
+
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var wishlistItems: ArrayList<WishlistItem>
+    private val wishlistItems = ArrayList<WishlistItem>()
     private lateinit var adapter: WishlistAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize the wishlist items list
-        wishlistItems = ArrayList()
 
         // Set up RecyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
@@ -36,22 +35,20 @@ class MainActivity : AppCompatActivity() {
         val addButton = findViewById<Button>(R.id.addButton)
         val emptyTextView = findViewById<TextView>(R.id.emptyTextView)
 
+        checkEmptyState(emptyTextView)
+
         // Add item to wishlist on button click
         addButton.setOnClickListener {
             val itemName = itemNameInput.text.toString()
             val itemPrice = itemPriceInput.text.toString()
             val itemUrl = itemUrlInput.text.toString()
 
-            if (itemName.isNotEmpty() && itemPrice.isNotEmpty() && itemUrl.isNotEmpty()) {
-                val newItem = WishlistItem(itemName, itemPrice, itemUrl)
-                wishlistItems.add(newItem)
-                adapter.notifyItemInserted(wishlistItems.size - 1)
-                itemNameInput.text.clear()
-                itemPriceInput.text.clear()
-                itemUrlInput.text.clear()
-
-                // Hide empty message
-                emptyTextView.visibility = if (wishlistItems.isEmpty()) View.VISIBLE else View.GONE
+            if (isInputValid(itemName, itemPrice, itemUrl)) {
+                addItemToWishlist(itemName, itemPrice, itemUrl)
+                clearInputs(itemNameInput, itemPriceInput, itemUrlInput)
+                checkEmptyState(emptyTextView)
+            } else{
+                // Show an error message or a Toast indicating invalid input
             }
 
         }
@@ -60,8 +57,26 @@ class MainActivity : AppCompatActivity() {
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                emptyTextView.visibility = if (wishlistItems.isEmpty()) View.VISIBLE else View.GONE
+                checkEmptyState(emptyTextView)
             }
         })
+    }
+
+    private fun isInputValid(name: String, price: String, url: String): Boolean {
+        return name.isNotEmpty() && price.isNotEmpty() && url.isNotEmpty()
+    }
+
+    private fun addItemToWishlist(name: String, price: String, url: String) {
+        val newItem = WishlistItem(name, price, url)
+        wishlistItems.add(newItem)
+        adapter.notifyItemInserted(wishlistItems.size - 1)
+    }
+
+    private fun clearInputs(vararg inputs: EditText) {
+        inputs.forEach { it.text.clear() }
+    }
+
+    private fun checkEmptyState(emptyTextView: TextView) {
+        emptyTextView.visibility = if (wishlistItems.isEmpty()) View.VISIBLE else View.GONE
     }
 }

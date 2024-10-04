@@ -1,24 +1,46 @@
 package com.example.wishlistapp
 
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class WishlistAdapter(private val items: ArrayList<WishlistItem>) :
+class WishlistAdapter(private val wishlistItems: ArrayList<WishlistItem>) :
     RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder>() {
 
-    class WishlistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView = view.findViewById(R.id.itemNameTextView)
-        val priceTextView: TextView = view.findViewById(R.id.itemPriceTextView)
-        val urlTextView: TextView = view.findViewById(R.id.itemUrlTextView)
+    inner class WishlistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val nameTextView: TextView = itemView.findViewById(R.id.itemNameTextView)
+        private val priceTextView: TextView = itemView.findViewById(R.id.itemPriceTextView)
+        private val urlTextView: TextView = itemView.findViewById(R.id.itemUrlTextView)
+
+
+        fun bind(wishlistItem: WishlistItem) {
+            nameTextView.text = wishlistItem.name
+            priceTextView.text = wishlistItem.price
+            urlTextView.text = wishlistItem.url
+
+            itemView.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(wishlistItem.url))
+                try {
+                    itemView.context.startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            itemView.setOnLongClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    wishlistItems.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, wishlistItems.size)
+                }
+                true // Return true to indicate the long press was handled
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishlistViewHolder {
@@ -27,39 +49,11 @@ class WishlistAdapter(private val items: ArrayList<WishlistItem>) :
     }
 
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
-        val item = items[position]
-        holder.nameTextView.text = item.name
-        holder.priceTextView.text = item.price
-        holder.urlTextView.text = item.url
-
-        // Open URL when clicked
-        holder.itemView.setOnClickListener {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.url))
-                ContextCompat.startActivity(it.context, browserIntent, null)
-            } catch (e: ActivityNotFoundException) {
-                Toast.makeText(it.context, "Invalid URL for " + item.name, Toast.LENGTH_LONG).show()
-            }
-        }
-
-        // Remove item by long press with confirmation dialog
-        holder.itemView.setOnLongClickListener {
-            AlertDialog.Builder(holder.itemView.context).apply {
-                setTitle("Delete Item")
-                setMessage("Are you sure you want to delete this item?")
-                setPositiveButton("Yes") { _, _ ->
-                    items.removeAt(position)
-                    notifyItemRemoved(position)
-                    notifyItemRangeChanged(position, items.size)
-                }
-                setNegativeButton("No", null)
-                show()
-            }
-            true
-        }
+        val currentItem = wishlistItems[position]
+        holder.bind(currentItem)
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return wishlistItems.size
     }
 }

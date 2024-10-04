@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
     <!-- Wishlist Heading -->
     <TextView
@@ -15,7 +18,10 @@
         android:textColor="#3F51B5"
         android:gravity="center"
         android:padding="16dp"
-        android:background="#00BCD472" />
+        android:background="#00BCD472"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Empty wishlist message -->
     <TextView
@@ -25,77 +31,95 @@
         android:text="@string/your_wishlist_is_empty"
         android:textSize="18sp"
         android:visibility="gone"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Input for item name -->
+    <EditText
+        android:id="@+id/itemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/item_name_hint"
+        android:textColor="#212121"
+        android:textStyle="bold"
+        android:inputType="text"
+        android:autofillHints="itemName"
+        android:padding="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/emptyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"/>
+
+        <!-- Input for item price -->
+    <EditText
+        android:id="@+id/itemPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/item_price_hint"
+        android:textColor="#212121"
+        android:textStyle="bold"
+        android:inputType="numberDecimal"
+        android:background="#FFCDD2"
+        android:autofillHints="itemPrice"
+        android:layout_marginTop="8dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/itemName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"/>
+
+        <!-- Input for item URL -->
+    <EditText
+        android:id="@+id/itemURL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/item_url_hint"
+        android:textColor="#212121"
+        android:textStyle="bold"
+        android:inputType="textUri"
+        android:autofillHints="url"
+        android:layout_marginTop="8dp"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/itemPrice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"/>
+
+        <!-- Button to add items to wishlist -->
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_item"
+        android:backgroundTint="#3F51B5"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/itemURL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
     <!-- Wishlist RecyclerView (below heading) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@android:color/white"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/addButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-    <!-- Input fields container -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="16dp"
-        android:background="#D0D4E9"
-        android:elevation="6dp">
-
-        <!-- Input for item name -->
-        <EditText
-            android:id="@+id/itemName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/item_name_hint"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:inputType="text"
-            android:autofillHints="itemName"
-            android:layout_marginTop="8dp"
-            android:padding="12dp" />
-
-        <!-- Input for item price -->
-        <EditText
-            android:id="@+id/itemPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/item_price_hint"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:inputType="numberDecimal"
-            android:autofillHints="itemPrice"
-            android:layout_marginTop="8dp"
-            android:padding="12dp" />
-
-        <!-- Input for item URL -->
-        <EditText
-            android:id="@+id/itemURL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/item_url_hint"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:inputType="textUri"
-            android:autofillHints="url"
-            android:layout_marginTop="8dp"
-            android:padding="12dp" />
-
-        <!-- Button to add items to wishlist -->
-        <Button
-            android:id="@+id/addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submit_button"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#3F51B5"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:padding="12dp" />
-    </LinearLayout>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
