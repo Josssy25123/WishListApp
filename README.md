@@ -27,7 +27,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/Josssy25123/WishListApp/blob/master/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/Josssy25123/WishListApp/blob/master/wisshlistGif-ezgif.com-video-to-gif-converter.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  
